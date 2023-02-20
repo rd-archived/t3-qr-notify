@@ -8,6 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
+    "prisma": "prisma",
     "cz": "cz",
     "cza": "git add . && cz"
   },
