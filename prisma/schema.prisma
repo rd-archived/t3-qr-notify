@@ -41,6 +41,12 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+    SuperAdmin
+    Admin
+    User
+}
+
 model User {
     id            Int           @id @unique @default(autoincrement())
     name          String?
@@ -51,6 +57,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     settings      UserSettings?
+    Vehicle       Vehicle[]
 }
 
 model VerificationToken {
@@ -59,6 +66,11 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum Gender {
+    Male
+    Female
 }
 
 model UserSettings {
@@ -82,13 +94,20 @@ model OTPToken {
     @@unique([identifier, pin])
 }
 
-enum Gender {
-    Male
-    Female
+enum VehicleType {
+    Car
+    Bike
 }
 
-enum Role {
-    SuperAdmin
-    Admin
-    User
+model Vehicle {
+    id        Int         @id @unique @default(autoincrement())
+    uid       String      @unique @default(cuid())
+    userId    Int
+    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    title     String
+    type      VehicleType
+    vehicleNo String
+    notify    Boolean     @default(true)
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
 }

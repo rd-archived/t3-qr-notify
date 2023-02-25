@@ -11,8 +11,10 @@ export default async function Home() {
   // Check if settings exists
   const settings = await getSettings(userId);
   if (!settings) {
-    redirect("/setup");
+    // Redirect to setup page
+    redirect("/dashboard/setup");
   }
 
-  return <div></div>;
+  // Redirect to dashboard
+  redirect("/dashboard");
 }
