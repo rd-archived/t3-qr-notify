@@ -1,16 +1,18 @@
+import { redirect } from "next/navigation";
+import { getSettings } from "~/server/user";
 import { getServerUserId } from "~/utils/auth";
-import Signin from "./signin";
 
 export default async function Home() {
-	const userId = await getServerUserId();
+  const userId = await getServerUserId();
+  if (!userId) {
+    redirect("/login");
+  }
 
-  return (
-    <div>
-			{userId ? <h1>Logged in as {userId}</h1> : null}
-			{!userId && <Signin />}
-      
-    </div>
-  );
+  // Check if settings exists
+  const settings = await getSettings(userId);
+  if (!settings) {
+    redirect("/setup");
+  }
+
+  return <div></div>;
 }
-
-

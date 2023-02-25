@@ -20,14 +20,14 @@ import type { User as PrismaUser } from "@prisma/client";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id: string;
-      role: PrismaUser['role'];
+      id: number;
+      role: PrismaUser["role"];
     } & DefaultSession["user"];
   }
 
   interface User {
-    id: string;
-    role: PrismaUser['role'];
+    id: number;
+    role: PrismaUser["role"];
   }
 }
 
@@ -39,7 +39,7 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
-      if (session.user ) {
+      if (session.user && typeof user.id === "number") {
         session.user.id = user.id;
         session.user.role = user.role;
       }
@@ -66,10 +66,10 @@ export const authOptions: NextAuthOptions = {
           access_type: "offline",
           prompt: "consent",
           response_type: "code",
-        }
-      }
+        },
+      },
     }),
-    
+
     /**
      * ...add more providers here.
      *
@@ -100,8 +100,8 @@ export const getServerAuthSessionLegacy = (ctx: {
  * @see https://next-auth.js.org/configuration/nextjs#in-app-directory
  */
 export const getServerAuthSession = () => {
-  return getServerSession(authOptions)
-}
+  return getServerSession(authOptions);
+};
 
 /**
  * Helper function to get user from session.
@@ -109,7 +109,7 @@ export const getServerAuthSession = () => {
 export const getServerUser = async () => {
   const session = await getServerAuthSession();
   return session?.user ?? null;
-}
+};
 
 /**
  * Helper function to get user ID from session.
@@ -117,4 +117,4 @@ export const getServerUser = async () => {
 export const getServerUserId = async () => {
   const user = await getServerUser();
   return user?.id ?? null;
-}
+};

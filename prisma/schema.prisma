@@ -64,7 +64,7 @@ model VerificationToken {
 model UserSettings {
     id            Int       @id @unique @default(autoincrement())
     userId        Int       @unique
-    phone         Int?
+    phone         String?   @db.Char(10)
     phoneVerified DateTime?
     gender        Gender?
 

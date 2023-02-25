@@ -1,4 +1,9 @@
 /** @type {import("eslint").Linter.Config} */
+
+function isProduction() {
+  return process.env.NODE_ENV == "production";
+}
+
 module.exports = {
   overrides: [
     {
@@ -25,5 +30,8 @@ module.exports = {
         fixStyle: "inline-type-imports",
       },
     ],
+    "@typescript-eslint/no-unused-vars": isProduction() ? "error" : "off",
+    "@typescript-eslint/no-empty-function": isProduction() ? "error" : "off",
+    "@typescript-eslint/require-await": isProduction() ? "error" : "warn",
   },
 };
